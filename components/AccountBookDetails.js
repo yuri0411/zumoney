@@ -1,5 +1,7 @@
-import React from 'react'
-import { Button, List, Tabs, Tag } from 'antd'
+import React, { useState } from 'react'
+import { Button, List, Tabs, Tag, Tooltip } from 'antd'
+import { PlusOutlined } from '@ant-design/icons'
+import AddHistoryModal from './AddHistoryModal'
 
 const accountBookTab = [
   {
@@ -15,7 +17,18 @@ const accountBookTab = [
 
 const AccountBookDetails = ({ data }) => {
   const { TabPane } = Tabs
-  const operations = <Button>추가</Button>
+  const [showModal, setShowModal] = useState(false)
+
+  const operations = (
+    <Tooltip title="내역 추가하기">
+      <Button
+        type="link"
+        shape="circle"
+        icon={<PlusOutlined />}
+        onClick={() => setShowModal(!showModal)}
+      />
+    </Tooltip>
+  )
 
   const getFilteredClassification = (tabName) => {
     const incomeHistory = data.filter((d) => d.tag === '수입')
@@ -31,25 +44,36 @@ const AccountBookDetails = ({ data }) => {
   }
 
   return (
-    <Tabs defaultActiveKey="1" tabBarExtraContent={operations}>
-      {accountBookTab.map((tab) => (
-        <TabPane tab={tab.name} key={tab.name}>
-          <List
-            dataSource={getFilteredClassification(tab.name)}
-            renderItem={(item) => (
-              <List.Item onClick={() => console.log('리스트 클릭했을때')}>
-                <List.Item.Meta
-                  avatar={<Tag>{item.tag}</Tag>}
-                  title={item.title}
-                  description={item.category}
-                />
-                <div>{item.price.toLocaleString()} 원</div>
-              </List.Item>
-            )}
-          />
-        </TabPane>
-      ))}
-    </Tabs>
+    <>
+      <Tabs defaultActiveKey="1" tabBarExtraContent={operations}>
+        {accountBookTab.map((tab) => (
+          <TabPane tab={tab.name} key={tab.name}>
+            <List
+              dataSource={getFilteredClassification(tab.name)}
+              renderItem={(item) => (
+                <List.Item onClick={() => console.log('리스트 클릭했을때')}>
+                  <List.Item.Meta
+                    avatar={
+                      <Tag color={item.tag === '지출' ? '#f50' : '#108ee9'}>
+                        {item.tag}
+                      </Tag>
+                    }
+                    title={item.title}
+                    description={item.category}
+                  />
+                  <div style={{ fontSize: 18 }}>
+                    {item.price.toLocaleString()} 원
+                  </div>
+                </List.Item>
+              )}
+            />
+          </TabPane>
+        ))}
+      </Tabs>
+      {showModal && (
+        <AddHistoryModal visible={showModal} setShowModal={setShowModal} />
+      )}
+    </>
   )
 }
 
