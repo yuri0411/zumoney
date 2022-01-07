@@ -4,3 +4,7 @@
     height: 31px;
     color: #fff;
 }
+
+.ant-picker-calendar-header {
+    display: none;
+}

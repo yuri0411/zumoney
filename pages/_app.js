@@ -1,10 +1,9 @@
-import 'antd/dist/antd.css'
-import '../styles/globals.css'
-import '../styles/index.css'
 import { Layout, Menu } from 'antd'
 import React from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
+import 'antd/dist/antd.css'
+import '../styles/globals.css'
 
 function MyApp({ Component, pageProps }) {
   const { Header, Content } = Layout
