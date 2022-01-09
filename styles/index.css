@@ -8,3 +8,10 @@
 .ant-picker-calendar-header {
     display: none;
 }
+.account-book-list-item {
+    cursor: pointer;
+
+}
+.account-book-list-item:hover {
+    opacity: 0.7;
+}

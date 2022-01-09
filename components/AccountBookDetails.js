@@ -51,7 +51,10 @@ const AccountBookDetails = ({ data }) => {
             <List
               dataSource={getFilteredClassification(tab.name)}
               renderItem={(item) => (
-                <List.Item onClick={() => console.log('리스트 클릭했을때')}>
+                <List.Item
+                  onClick={() => setShowModal(!showModal)}
+                  className="account-book-list-item"
+                >
                   <List.Item.Meta
                     avatar={
                       <Tag color={item.tag === '지출' ? '#f50' : '#108ee9'}>
