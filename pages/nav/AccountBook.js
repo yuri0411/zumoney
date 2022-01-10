@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Col, Row, Statistic } from 'antd'
+import { Button, Col, DatePicker, Row, Statistic } from 'antd'
 import AccountBookDetails from '../../components/AccountBookDetails'
 import AccountBookCalendar from '../../components/AccountBookCalendar'
 
@@ -62,12 +62,14 @@ const AccountBook = () => {
           align="middle"
           style={{ background: '#F0F0F0', padding: 20, borderRadius: 5 }}
         >
-          <Col span={4}>1월</Col>
           <Col span={8}>
             <Statistic title="총 지출" value={getTotalAmount('지출')} />
           </Col>
           <Col span={8}>
             <Statistic title="총 수입" value={getTotalAmount('수입')} />
+          </Col>
+          <Col span={4}>
+            <DatePicker picker="month" bordered={false} />
           </Col>
           <Col span={4}>
             <Button onClick={() => setToggleBtn(!toggleBtn)}>
