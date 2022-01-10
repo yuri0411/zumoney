@@ -1,4 +1,4 @@
-import { Layout, Menu } from 'antd'
+import { Col, Layout, Menu, Row } from 'antd'
 import React from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
@@ -15,24 +15,35 @@ function MyApp({ Component, pageProps }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header>
-        <div className="logo"> zu:money </div>
-        <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
-          <Menu.Item key="Asset Status">
-            <Link href="/nav/AssetStatus">
-              <a>자산 현황</a>
+        <Row>
+          <Col span={6}>
+            <div className="logo"> zu:money </div>
+          </Col>
+          <Col span={14}>
+            <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
+              <Menu.Item key="Asset Status">
+                <Link href="/nav/AssetStatus">
+                  <a>자산 현황</a>
+                </Link>
+              </Menu.Item>
+              <Menu.Item key="Account Book">
+                <Link href="/nav/AccountBook">
+                  <a>가계부</a>
+                </Link>
+              </Menu.Item>
+              <Menu.Item key="Asset Management">
+                <Link href="/nav/AssetManagement">
+                  <a>자산 관리</a>
+                </Link>
+              </Menu.Item>
+            </Menu>
+          </Col>
+          <Col span={4}>
+            <Link href="/logIn">
+              <a style={{ color: '#999' }}>로그인</a>
             </Link>
-          </Menu.Item>
-          <Menu.Item key="Account Book">
-            <Link href="/nav/AccountBook">
-              <a>가계부</a>
-            </Link>
-          </Menu.Item>
-          <Menu.Item key="Asset Management">
-            <Link href="/nav/AssetManagement">
-              <a>자산 관리</a>
-            </Link>
-          </Menu.Item>
-        </Menu>
+          </Col>
+        </Row>
       </Header>
       <Content style={{ padding: 24 }}>
         <Component {...pageProps} />
