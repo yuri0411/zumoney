@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Form,
   Input,
@@ -13,47 +13,112 @@ import dayjs from 'dayjs'
 
 const { Option } = Select
 
-const options = [
-  {
-    value: '주수입',
-    label: '주수입',
-    children: [
+const options = (type) => {
+  if (type === 'income') {
+    return [
       {
-        value: '급여',
-        label: '급여',
-      },
-    ],
-  },
-  {
-    value: '부수입',
-    label: '부수입',
-    children: [
-      {
-        value: '이자',
-        label: '이자',
+        value: '주수입',
+        label: '주수입',
+        children: [
+          {
+            value: '급여',
+            label: '급여',
+          },
+        ],
       },
       {
-        value: '보험 청구',
-        label: '보험 청구',
+        value: '부수입',
+        label: '부수입',
+        children: [
+          {
+            value: '이자',
+            label: '이자',
+          },
+          {
+            value: '보험 청구',
+            label: '보험 청구',
+          },
+          {
+            value: '기타',
+            label: '기타',
+          },
+        ],
+      },
+    ]
+  } else if (type === 'expenditure') {
+    return [
+      {
+        value: '식비',
+        label: '식비',
+        children: [
+          {
+            value: '점심',
+            label: '점심',
+          },
+        ],
       },
       {
-        value: '기타',
-        label: '기타',
+        value: '경조사',
+        label: '경조사',
+        children: [
+          {
+            value: '선물',
+            label: '선물',
+          },
+          {
+            value: '축의금',
+            label: '축의금',
+          },
+          {
+            value: '부의금',
+            label: '부의금',
+          },
+        ],
       },
-    ],
-  },
-]
+    ]
+  }
+  return null
+}
 
 const AddHistoryModal = (props) => {
   const { visible, setShowModal } = props
+  const [form] = Form.useForm()
+  const [classificationValue, setClassificationValue] = useState('income')
   const dateFormat = 'YYYY/MM/DD'
 
   const handleHistorySave = () => {
-    console.log('내역 저장')
+    const allData = form.getFieldsValue()
+    console.log('allData', allData)
   }
-
-  const handleChangeHistory = (label) => (value) => {
-    console.log(label, value)
+  const handleChange = (e) => {
+    const value = e.target.value
+    setClassificationValue(value)
+  }
+  const getFormItemByType = (type) => {
+    if (type === 'income') {
+      return (
+        <Form.Item label="입금 통장" initialValue="신한은행">
+          <Select allowClear>
+            <Option value="신한은행">신한은행</Option>
+            <Option value="우리은행">우리은행</Option>
+            <Option value="카카오뱅크">카카오뱅크</Option>
+            <Option value="기업은행">기업은행</Option>
+          </Select>
+        </Form.Item>
+      )
+    } else if (type === 'expenditure') {
+      return (
+        <Form.Item label="결제 수단" initialValue="신한카드">
+          <Select allowClear>
+            <Option value="신한카드">신한카드</Option>
+            <Option value="우리카드">우리카드</Option>
+            <Option value="카카오 체크카드">카카오 체크카드</Option>
+            <Option value="기업카드">기업카드</Option>
+          </Select>
+        </Form.Item>
+      )
+    }
+    return null
   }
 
   return (
@@ -67,9 +132,9 @@ const AddHistoryModal = (props) => {
         </Button>,
       ]}
     >
-      <Form labelCol={{ span: 4 }} labelAlign="left" colon={false}>
+      <Form form={form} labelCol={{ span: 4 }} labelAlign="left" colon={false}>
         <Form.Item label="분류" name="classification" initialValue="income">
-          <Radio.Group>
+          <Radio.Group onChange={handleChange}>
             <Radio.Button value="income">수입</Radio.Button>
             <Radio.Button value="expenditure">지출</Radio.Button>
           </Radio.Group>
@@ -77,21 +142,10 @@ const AddHistoryModal = (props) => {
         <Form.Item label="금액" name="price">
           <Input suffix="원" />
         </Form.Item>
-        <Form.Item
-          label="카테고리"
-          name="category"
-          initialValue={['주수입', '급여']}
-        >
-          <Cascader options={options} />
+        <Form.Item label="카테고리" name="category">
+          <Cascader options={options(classificationValue)} />
         </Form.Item>
-        <Form.Item label="입금 통장" initialValue="신한은행">
-          <Select allowClear>
-            <Option value="신한은행">신한은행</Option>
-            <Option value="우리은행">우리은행</Option>
-            <Option value="카카오뱅크">카카오뱅크</Option>
-            <Option value="기업은행">기업은행</Option>
-          </Select>
-        </Form.Item>
+        {getFormItemByType(classificationValue)}
         <Form.Item
           label="날짜"
           name="date"
