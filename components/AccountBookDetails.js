@@ -19,16 +19,6 @@ const AccountBookDetails = ({ data }) => {
   const { TabPane } = Tabs
   const [showModal, setShowModal] = useState(false)
   const [historyData, setHistoryData] = useState({})
-  const operations = (
-    <Tooltip title="내역 추가하기">
-      <Button
-        type="link"
-        shape="circle"
-        icon={<PlusOutlined />}
-        onClick={() => setShowModal(!showModal)}
-      />
-    </Tooltip>
-  )
 
   const getFilteredClassification = (tabName) => {
     const incomeHistory = data.filter((d) => d.classification === '수입')
@@ -44,13 +34,30 @@ const AccountBookDetails = ({ data }) => {
   }
 
   const handleAddModal = () => {
-    console.log('여기는 추가')
+    setShowModal(!showModal)
+    setHistoryData({})
   }
 
-  const handleEditModal = () => {
-    console.log('여기는 수정')
+  const handleEditModal = (id) => {
+    setShowModal(!showModal)
+    let selectedData
+    data.forEach((item) => {
+      if (item.id === id) {
+        selectedData = item
+      }
+    })
+    setHistoryData(selectedData)
   }
-
+  const operations = (
+    <Tooltip title="내역 추가하기">
+      <Button
+        type="link"
+        shape="circle"
+        icon={<PlusOutlined />}
+        onClick={handleAddModal}
+      />
+    </Tooltip>
+  )
   return (
     <>
       <Tabs defaultActiveKey="1" tabBarExtraContent={operations}>
@@ -60,7 +67,7 @@ const AccountBookDetails = ({ data }) => {
               dataSource={getFilteredClassification(tab.name)}
               renderItem={(item) => (
                 <List.Item
-                  onClick={() => setShowModal(!showModal)}
+                  onClick={() => handleEditModal(item.id)}
                   className="account-book-list-item"
                 >
                   <List.Item.Meta

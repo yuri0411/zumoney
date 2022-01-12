@@ -10,6 +10,7 @@ const testData = [
     classification: '지출',
     category: ['지출', '의료비'],
     price: 205000,
+    payment: '신한카드',
     date: '',
   },
   {
@@ -18,6 +19,7 @@ const testData = [
     classification: '지출',
     category: ['지출', '생활용품'],
     price: 53800,
+    payment: '신한카드',
     date: '',
   },
   {
@@ -26,6 +28,7 @@ const testData = [
     classification: '수입',
     category: ['부수입', '급여'],
     price: 2731000,
+    bank: '신한은행',
     date: '',
   },
   {
@@ -34,6 +37,7 @@ const testData = [
     classification: '수입',
     category: ['부수입', '이자'],
     price: 1251,
+    bank: '신한은행',
     date: '',
   },
   {
@@ -42,6 +46,7 @@ const testData = [
     classification: '지출',
     category: ['지출', '의료비'],
     price: 9000,
+    payment: '카카오 체크카드',
     date: '',
   },
   {
@@ -50,6 +55,7 @@ const testData = [
     classification: '지출',
     category: ['지출', '의류'],
     price: 121000,
+    payment: '신한카드',
     date: '',
   },
 ]

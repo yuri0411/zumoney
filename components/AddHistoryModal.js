@@ -82,11 +82,11 @@ const options = (type) => {
 
 const AddHistoryModal = (props) => {
   const { visible, setShowModal, data } = props
-  const { memo, classification, category, price, date } = data
+  const { memo, classification, category, price, date, payment, bank } = data
   const [form] = Form.useForm()
-  const [classificationValue, setClassificationValue] = useState('income')
+  const [classificationValue, setClassificationValue] = useState()
   const dateFormat = 'YYYY/MM/DD'
-  console.log('data', data)
+
   const handleHistorySave = () => {
     const allData = form.getFieldsValue()
     console.log('allData', allData)
@@ -96,10 +96,10 @@ const AddHistoryModal = (props) => {
     setClassificationValue(value)
   }
   const getFormItemByType = (type) => {
-    if (type === 'income') {
+    if (type === '수입') {
       return (
-        <Form.Item label="입금 통장" initialValue="신한은행">
-          <Select allowClear>
+        <Form.Item label="입금 통장">
+          <Select allowClear defaultValue={bank}>
             <Option value="신한은행">신한은행</Option>
             <Option value="우리은행">우리은행</Option>
             <Option value="카카오뱅크">카카오뱅크</Option>
@@ -107,10 +107,10 @@ const AddHistoryModal = (props) => {
           </Select>
         </Form.Item>
       )
-    } else if (type === 'expenditure') {
+    } else if (type === '지출') {
       return (
-        <Form.Item label="결제 수단" initialValue="신한카드">
-          <Select allowClear>
+        <Form.Item label="결제 수단">
+          <Select allowClear defaultValue={payment}>
             <Option value="신한카드">신한카드</Option>
             <Option value="우리카드">우리카드</Option>
             <Option value="카카오 체크카드">카카오 체크카드</Option>
@@ -121,7 +121,9 @@ const AddHistoryModal = (props) => {
     }
     return null
   }
-
+  useEffect(() => {
+    setClassificationValue(classification)
+  }, [classification])
   return (
     <Modal
       visible={visible}
@@ -134,16 +136,20 @@ const AddHistoryModal = (props) => {
       ]}
     >
       <Form form={form} labelCol={{ span: 4 }} labelAlign="left" colon={false}>
-        <Form.Item label="분류" name="classification" initialValue="income">
+        <Form.Item
+          label="분류"
+          name="classification"
+          initialValue={classification}
+        >
           <Radio.Group onChange={handleChange}>
-            <Radio.Button value="income">수입</Radio.Button>
-            <Radio.Button value="expenditure">지출</Radio.Button>
+            <Radio.Button value="수입">수입</Radio.Button>
+            <Radio.Button value="지출">지출</Radio.Button>
           </Radio.Group>
         </Form.Item>
-        <Form.Item label="금액" name="price">
+        <Form.Item label="금액" name="price" initialValue={price}>
           <Input suffix="원" />
         </Form.Item>
-        <Form.Item label="카테고리" name="category">
+        <Form.Item label="카테고리" name="category" initialValue={category}>
           <Cascader options={options(classificationValue)} />
         </Form.Item>
         {getFormItemByType(classificationValue)}
@@ -154,7 +160,7 @@ const AddHistoryModal = (props) => {
         >
           <DatePicker format={dateFormat} />
         </Form.Item>
-        <Form.Item label="메모" name="memo">
+        <Form.Item label="메모" name="memo" initialValue={memo}>
           <Input />
         </Form.Item>
       </Form>
