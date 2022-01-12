@@ -81,11 +81,12 @@ const options = (type) => {
 }
 
 const AddHistoryModal = (props) => {
-  const { visible, setShowModal } = props
+  const { visible, setShowModal, data } = props
+  const { memo, classification, category, price, date } = data
   const [form] = Form.useForm()
   const [classificationValue, setClassificationValue] = useState('income')
   const dateFormat = 'YYYY/MM/DD'
-
+  console.log('data', data)
   const handleHistorySave = () => {
     const allData = form.getFieldsValue()
     console.log('allData', allData)

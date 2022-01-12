@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, List, Tabs, Tag, Tooltip } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import AddHistoryModal from './AddHistoryModal'
@@ -18,7 +18,7 @@ const accountBookTab = [
 const AccountBookDetails = ({ data }) => {
   const { TabPane } = Tabs
   const [showModal, setShowModal] = useState(false)
-
+  const [historyData, setHistoryData] = useState({})
   const operations = (
     <Tooltip title="내역 추가하기">
       <Button
@@ -31,8 +31,8 @@ const AccountBookDetails = ({ data }) => {
   )
 
   const getFilteredClassification = (tabName) => {
-    const incomeHistory = data.filter((d) => d.tag === '수입')
-    const expenditureHistory = data.filter((d) => d.tag === '지출')
+    const incomeHistory = data.filter((d) => d.classification === '수입')
+    const expenditureHistory = data.filter((d) => d.classification === '지출')
 
     if (tabName === '수입') {
       return incomeHistory
@@ -41,6 +41,14 @@ const AccountBookDetails = ({ data }) => {
     } else {
       return data
     }
+  }
+
+  const handleAddModal = () => {
+    console.log('여기는 추가')
+  }
+
+  const handleEditModal = () => {
+    console.log('여기는 수정')
   }
 
   return (
@@ -57,11 +65,15 @@ const AccountBookDetails = ({ data }) => {
                 >
                   <List.Item.Meta
                     avatar={
-                      <Tag color={item.tag === '지출' ? '#f50' : '#108ee9'}>
-                        {item.tag}
+                      <Tag
+                        color={
+                          item.classification === '지출' ? '#f50' : '#108ee9'
+                        }
+                      >
+                        {item.classification}
                       </Tag>
                     }
-                    title={item.title}
+                    title={item.memo}
                     description={item.category}
                   />
                   <div style={{ fontSize: 18 }}>
@@ -74,7 +86,11 @@ const AccountBookDetails = ({ data }) => {
         ))}
       </Tabs>
       {showModal && (
-        <AddHistoryModal visible={showModal} setShowModal={setShowModal} />
+        <AddHistoryModal
+          visible={showModal}
+          setShowModal={setShowModal}
+          data={historyData}
+        />
       )}
     </>
   )
