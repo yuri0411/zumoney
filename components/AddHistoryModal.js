@@ -14,7 +14,7 @@ import dayjs from 'dayjs'
 const { Option } = Select
 
 const options = (type) => {
-  if (type === 'income') {
+  if (type === '수입') {
     return [
       {
         value: '주수입',
@@ -45,7 +45,7 @@ const options = (type) => {
         ],
       },
     ]
-  } else if (type === 'expenditure') {
+  } else if (type === '지출') {
     return [
       {
         value: '식비',

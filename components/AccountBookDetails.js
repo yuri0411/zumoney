@@ -14,11 +14,19 @@ const accountBookTab = [
     name: '지출',
   },
 ]
-
+const initHistoryData = {
+  id: undefined,
+  memo: '',
+  classification: '수입',
+  category: [],
+  price: undefined,
+  payment: '',
+  date: '',
+}
 const AccountBookDetails = ({ data }) => {
   const { TabPane } = Tabs
   const [showModal, setShowModal] = useState(false)
-  const [historyData, setHistoryData] = useState({})
+  const [historyData, setHistoryData] = useState(initHistoryData)
 
   const getFilteredClassification = (tabName) => {
     const incomeHistory = data.filter((d) => d.classification === '수입')
@@ -35,7 +43,7 @@ const AccountBookDetails = ({ data }) => {
 
   const handleAddModal = () => {
     setShowModal(!showModal)
-    setHistoryData({})
+    setHistoryData(initHistoryData)
   }
 
   const handleEditModal = (id) => {
