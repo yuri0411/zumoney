@@ -1,5 +1,5 @@
 import React from 'react'
-import { DatePicker, Form, Input, Modal, Select, Switch } from 'antd'
+import { Button, DatePicker, Form, Input, Modal, Select, Switch } from 'antd'
 import dayjs from 'dayjs'
 
 const AccountModal = (props) => {
@@ -9,20 +9,31 @@ const AccountModal = (props) => {
   const dateFormat = 'YYYY/MM/DD'
 
   const handleAccountItemSave = () => {
-    console.log('저장')
+    form
+      .validateFields()
+      .then((value) => {
+        console.log('handleAccountItemSave', value)
+      })
+      .catch((error) => {
+        console.error('handleAccountItemSave', error)
+      })
   }
   return (
     <Modal
       visible={visible}
       title={'계좌/현금 추가하기'}
       onCancel={onCancel}
-      onOk={handleAccountItemSave}
+      footer={[
+        <Button key="submit" type="primary" onClick={handleAccountItemSave}>
+          저장
+        </Button>,
+      ]}
     >
       <Form form={form} labelCol={{ span: 4 }} labelAlign="left" colon={false}>
         <Form.Item label="메모" name="memo">
           <Input />
         </Form.Item>
-        <Form.Item label="입금 통장">
+        <Form.Item label="분류">
           <Select allowClear defaultValue={'입출금'}>
             <Option value="입출금">입출금</Option>
             <Option value="예적금">예적금</Option>
