@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Button, PageHeader, Tabs } from 'antd'
 import AccountModal from '../../components/management/AccountModal'
 import AccountManagement from '../../components/management/AccountManagement'
+import Seo from '../../components/Seo'
 
 const managementTabList = [
   { name: '계좌/현금', component: <AccountManagement /> },
@@ -17,6 +18,7 @@ const AssetManagement = () => {
   }
   return (
     <>
+      <Seo title="자산 관리" />
       <Tabs tabPosition="left">
         {managementTabList.map((tab) => (
           <TabPane tab={tab.name} key={tab.name}>

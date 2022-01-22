@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Button, Col, DatePicker, Row, Statistic } from 'antd'
 import AccountBookDetails from '../../components/AccountBookDetails'
 import AccountBookCalendar from '../../components/AccountBookCalendar'
+import Seo from '../../components/Seo'
 
 const testData = [
   {
@@ -74,36 +75,39 @@ const AccountBook = () => {
   }
 
   return (
-    <Row gutter={[16, 16]}>
-      <Col span={24}>
-        <Row
-          align="middle"
-          style={{ background: '#F0F0F0', padding: 20, borderRadius: 5 }}
-        >
-          <Col span={8}>
-            <Statistic title="총 지출" value={getTotalAmount('지출')} />
-          </Col>
-          <Col span={8}>
-            <Statistic title="총 수입" value={getTotalAmount('수입')} />
-          </Col>
-          <Col span={4}>
-            <DatePicker picker="month" bordered={false} />
-          </Col>
-          <Col span={4}>
-            <Button onClick={() => setToggleBtn(!toggleBtn)}>
-              {toggleBtn ? '상세보기' : '달력보기'}
-            </Button>
-          </Col>
-        </Row>
-      </Col>
-      <Col span={24}>
-        {toggleBtn ? (
-          <AccountBookCalendar data={testData} />
-        ) : (
-          <AccountBookDetails data={testData} />
-        )}
-      </Col>
-    </Row>
+    <>
+      <Seo title="가계부" />
+      <Row gutter={[16, 16]}>
+        <Col span={24}>
+          <Row
+            align="middle"
+            style={{ background: '#F0F0F0', padding: 20, borderRadius: 5 }}
+          >
+            <Col span={8}>
+              <Statistic title="총 지출" value={getTotalAmount('지출')} />
+            </Col>
+            <Col span={8}>
+              <Statistic title="총 수입" value={getTotalAmount('수입')} />
+            </Col>
+            <Col span={4}>
+              <DatePicker picker="month" bordered={false} />
+            </Col>
+            <Col span={4}>
+              <Button onClick={() => setToggleBtn(!toggleBtn)}>
+                {toggleBtn ? '상세보기' : '달력보기'}
+              </Button>
+            </Col>
+          </Row>
+        </Col>
+        <Col span={24}>
+          {toggleBtn ? (
+            <AccountBookCalendar data={testData} />
+          ) : (
+            <AccountBookDetails data={testData} />
+          )}
+        </Col>
+      </Row>
+    </>
   )
 }
 
