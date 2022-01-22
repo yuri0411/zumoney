@@ -1,7 +1,10 @@
 import { Button, Form, Input, Modal, Select, Switch } from 'antd'
+import { useEffect, useState } from 'react'
 
 const AccountModal = (props) => {
-  const { visible, onCancel } = props
+  const { visible, onCancel, data } = props
+  // const { name, balance, usage } = data
+  console.log('data', data)
   const [form] = Form.useForm()
   const { Option } = Select
   const handleAccountItemSave = () => {
@@ -14,6 +17,7 @@ const AccountModal = (props) => {
         console.error('handleAccountItemSave', error)
       })
   }
+  useEffect(() => {}, [data])
   return (
     <Modal
       visible={visible}
@@ -26,21 +30,33 @@ const AccountModal = (props) => {
       ]}
     >
       <Form form={form} labelCol={{ span: 4 }} labelAlign="left" colon={false}>
-        <Form.Item label="메모" name="memo">
+        <Form.Item label="메모" name="name" initialValue={data && data?.name}>
           <Input />
         </Form.Item>
-        <Form.Item label="분류">
-          <Select allowClear defaultValue={'입출금'}>
-            <Option value="입출금">입출금</Option>
-            <Option value="예적금">예적금</Option>
-            <Option value="현금">현금</Option>
+        <Form.Item
+          label="분류"
+          name="category"
+          initialValue={data && data?.categoryId}
+        >
+          <Select allowClear>
+            <Option value={9}>입출금</Option>
+            <Option value={10}>예적금</Option>
+            <Option value={11}>현금</Option>
           </Select>
         </Form.Item>
-        <Form.Item label="금액" name="price" initialValue={0}>
+        <Form.Item
+          label="금액"
+          name="price"
+          initialValue={data && Number(data?.balance)}
+        >
           <Input suffix="원" />
         </Form.Item>
 
-        <Form.Item label="사용 여부" name="enable" initialValue={true}>
+        <Form.Item
+          label="사용 여부"
+          name="usage"
+          initialValue={data && data?.usage}
+        >
           <Switch />
         </Form.Item>
       </Form>

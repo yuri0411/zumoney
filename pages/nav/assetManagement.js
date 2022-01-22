@@ -9,17 +9,23 @@ const AssetManagement = () => {
   const { TabPane } = Tabs
   const [showModal, setShowModal] = useState(false)
   const [assetsInfo, setAssetsInfo] = useState([])
+  const [assetData, setAssetData] = useState()
   const [assetCategory, setAssetCategory] = useState([])
   const addAccount = () => {
     setShowModal(!showModal)
   }
   const handleEditAccount = (id) => {
     setShowModal(!showModal)
+    fetch(
+      `https://zumoney.herokuapp.com/users/${'780c9676-c655-4851-bfeb-cd1c6b7b5439'}/assets/${id}`,
+    )
+      .then((res) => res.json())
+      .then((data) => setAssetData(data))
   }
 
   useEffect(() => {
     fetch(
-      `https://zumoney.herokuapp.com/users/${'cef8c8b5-e303-40ee-b8df-ce5a2b955497'}/assets`,
+      `https://zumoney.herokuapp.com/users/${'780c9676-c655-4851-bfeb-cd1c6b7b5439'}/assets`,
     )
       .then((res) => res.json())
       .then((data) => setAssetsInfo(data?.assets))
@@ -58,6 +64,7 @@ const AssetManagement = () => {
         <AccountModal
           visible={showModal}
           onCancel={() => setShowModal(!showModal)}
+          data={assetData}
         />
       ) : null}
     </>

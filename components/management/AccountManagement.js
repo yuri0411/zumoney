@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { List } from 'antd'
 
 const typeOfList = [
@@ -9,20 +9,36 @@ const typeOfList = [
 
 const AccountManagement = (props) => {
   const { category, handleEditAccount, assetsData } = props
-  console.log('assetsData', assetsData)
-  const getFilteredAssets = (type, assetsData) => {}
+  const [accountCategory, setAccountCategory] = useState([])
+
+  const getFilteredAssets = (categoryId, data) => {
+    let filteredData = []
+
+    data.forEach((d) => {
+      if (categoryId === d?.categoryId) {
+        filteredData.push(d)
+      }
+    })
+    return filteredData
+  }
+
+  useEffect(() => {
+    fetch(`https://zumoney.herokuapp.com/categories/${4}/children`)
+      .then((res) => res.json())
+      .then((category) => setAccountCategory(category))
+  }, [])
   return (
     <>
-      {typeOfList.map((list) => (
+      {accountCategory.map((list) => (
         <List
           header={
             <div>
-              {list.type} <span>0 원</span>
+              {list.name} <span>0 원</span>
             </div>
           }
           size="small"
-          dataSource={getFilteredAssets(list.type, assetsData)}
-          key={list.type}
+          dataSource={getFilteredAssets(list.id, assetsData)}
+          key={list.name}
           renderItem={(asset) => (
             <List.Item onClick={() => handleEditAccount(asset.id)}>
               <List.Item.Meta title={<div>{asset.name}</div>} />
