@@ -1,49 +1,16 @@
 import React from 'react'
 import { List } from 'antd'
 
-const typeOfList = [{ type: '입출금' }, { type: '예적금' }, { type: '현금' }]
-const testData = (type) => {
-  if (type === '입출금') {
-    return [
-      {
-        title: '기업은행',
-        value: 14,
-      },
-      {
-        title: '신한은행',
-        value: 1747,
-      },
-      {
-        title: '카카오뱅크',
-        value: 1620000,
-      },
-      {
-        title: '우리은행',
-        value: 170340,
-      },
-    ]
-  } else if (type === '예적금') {
-    return [
-      {
-        title: '주택청약(신한)',
-        value: 2807504,
-      },
-      {
-        title: '새마을금고',
-        value: 2000000,
-      },
-    ]
-  } else if (type === '현금') {
-    return [
-      {
-        title: '현금',
-        value: 5000,
-      },
-    ]
-  }
-}
+const typeOfList = [
+  { id: 4, type: '입출금' },
+  { type: '예적금' },
+  { type: '현금' },
+]
 
-const AccountManagement = () => {
+const AccountManagement = (props) => {
+  const { category, handleEditAccount, assetsData } = props
+  console.log('assetsData', assetsData)
+  const getFilteredAssets = (type, assetsData) => {}
   return (
     <>
       {typeOfList.map((list) => (
@@ -54,12 +21,12 @@ const AccountManagement = () => {
             </div>
           }
           size="small"
-          dataSource={testData(list.type)}
+          dataSource={getFilteredAssets(list.type, assetsData)}
           key={list.type}
-          renderItem={(item) => (
-            <List.Item>
-              <List.Item.Meta title={<div>{item.title}</div>} />
-              <div>{item.value.toLocaleString()} 원</div>
+          renderItem={(asset) => (
+            <List.Item onClick={() => handleEditAccount(asset.id)}>
+              <List.Item.Meta title={<div>{asset.name}</div>} />
+              <div>{Number(asset.balance).toLocaleString()} 원</div>
             </List.Item>
           )}
         />

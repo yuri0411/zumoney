@@ -1,13 +1,9 @@
-import React from 'react'
-import { Button, DatePicker, Form, Input, Modal, Select, Switch } from 'antd'
-import dayjs from 'dayjs'
+import { Button, Form, Input, Modal, Select, Switch } from 'antd'
 
 const AccountModal = (props) => {
   const { visible, onCancel } = props
   const [form] = Form.useForm()
   const { Option } = Select
-  const dateFormat = 'YYYY/MM/DD'
-
   const handleAccountItemSave = () => {
     form
       .validateFields()
@@ -43,13 +39,7 @@ const AccountModal = (props) => {
         <Form.Item label="금액" name="price" initialValue={0}>
           <Input suffix="원" />
         </Form.Item>
-        <Form.Item
-          label="날짜"
-          name="date"
-          initialValue={dayjs('2015/01/01', dateFormat)}
-        >
-          <DatePicker format={dateFormat} />
-        </Form.Item>
+
         <Form.Item label="사용 여부" name="enable" initialValue={true}>
           <Switch />
         </Form.Item>
