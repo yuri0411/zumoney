@@ -26,9 +26,16 @@ const AccountModal = (props) => {
       title={title}
       onCancel={onCancel}
       footer={[
-        <Button key="submit" type="primary" onClick={handleAccountItemSave}>
-          {okText}
-        </Button>,
+        <>
+          {data && (
+            <Button key="delete" danger onClick={() => console.log('삭제하기')}>
+              삭제
+            </Button>
+          )}
+          <Button key="submit" type="primary" onClick={handleAccountItemSave}>
+            {okText}
+          </Button>
+        </>,
       ]}
     >
       <Form form={form} labelCol={{ span: 4 }} labelAlign="left" colon={false}>
