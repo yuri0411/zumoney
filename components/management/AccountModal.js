@@ -1,10 +1,8 @@
 import { Button, Form, Input, Modal, Select, Switch } from 'antd'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 const AccountModal = (props) => {
-  const { visible, onCancel, data } = props
-  // const { name, balance, usage } = data
-  console.log('data', data)
+  const { visible, onCancel, data, setAssetData, title, okText } = props
   const [form] = Form.useForm()
   const { Option } = Select
   const handleAccountItemSave = () => {
@@ -17,15 +15,19 @@ const AccountModal = (props) => {
         console.error('handleAccountItemSave', error)
       })
   }
-  useEffect(() => {}, [data])
+
+  useEffect(() => {
+    return () => setAssetData(undefined)
+  }, [setAssetData])
+
   return (
     <Modal
       visible={visible}
-      title={'계좌/현금 추가하기'}
+      title={title}
       onCancel={onCancel}
       footer={[
         <Button key="submit" type="primary" onClick={handleAccountItemSave}>
-          저장
+          {okText}
         </Button>,
       ]}
     >
@@ -35,7 +37,7 @@ const AccountModal = (props) => {
         </Form.Item>
         <Form.Item
           label="분류"
-          name="category"
+          name="categoryId"
           initialValue={data && data?.categoryId}
         >
           <Select allowClear>
@@ -46,7 +48,7 @@ const AccountModal = (props) => {
         </Form.Item>
         <Form.Item
           label="금액"
-          name="price"
+          name="balance"
           initialValue={data && Number(data?.balance)}
         >
           <Input suffix="원" />
@@ -55,9 +57,10 @@ const AccountModal = (props) => {
         <Form.Item
           label="사용 여부"
           name="usage"
+          valuePropName="checked"
           initialValue={data && data?.usage}
         >
-          <Switch />
+          <Switch defaultChecked />
         </Form.Item>
       </Form>
     </Modal>

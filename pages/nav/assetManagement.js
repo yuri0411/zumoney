@@ -12,15 +12,17 @@ const AssetManagement = () => {
   const [assetData, setAssetData] = useState()
   const [assetCategory, setAssetCategory] = useState([])
   const addAccount = () => {
-    setShowModal(!showModal)
+    setShowModal(true)
   }
   const handleEditAccount = (id) => {
-    setShowModal(!showModal)
     fetch(
       `https://zumoney.herokuapp.com/users/${'780c9676-c655-4851-bfeb-cd1c6b7b5439'}/assets/${id}`,
     )
       .then((res) => res.json())
-      .then((data) => setAssetData(data))
+      .then((data) => {
+        setAssetData(data)
+        setShowModal(true)
+      })
   }
 
   useEffect(() => {
@@ -65,6 +67,9 @@ const AssetManagement = () => {
           visible={showModal}
           onCancel={() => setShowModal(!showModal)}
           data={assetData}
+          setAssetData={setAssetData}
+          title={assetData ? '수정하기' : '추가하기'}
+          okText={assetData ? '수정' : '저장'}
         />
       ) : null}
     </>
