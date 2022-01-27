@@ -1,21 +1,62 @@
 import { Button, Form, Input, Modal, Select, Switch } from 'antd'
 import { useEffect } from 'react'
+import useSWR, { useSWRConfig } from 'swr'
 
 const AccountModal = (props) => {
-  const { visible, onCancel, data, setAssetData, title, okText } = props
+  const { visible, onCancel, data, setAssetData, title, okText, setShowModal } =
+    props
   const [form] = Form.useForm()
   const { Option } = Select
+  const { mutate } = useSWRConfig()
+
   const handleAccountItemSave = () => {
     form
       .validateFields()
       .then((value) => {
-        console.log('handleAccountItemSave', value)
+        const stringConversion = { ...value, balance: parseInt(value.balance) }
+        fetch(
+          `http://zumoney-server.iptime.org:8080/users/${'780c9676-c655-4851-bfeb-cd1c6b7b5439'}/assets`,
+          {
+            method: 'POST',
+            body: JSON.stringify(stringConversion),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          },
+        ).then(() => {
+          setShowModal(false)
+          mutate(
+            `https://zumoney.herokuapp.com/users/${'780c9676-c655-4851-bfeb-cd1c6b7b5439'}/assets`,
+          )
+        })
+
+        // fetch(
+        //   `http://zumoney-server.iptime.org:8080/users/${'780c9676-c655-4851-bfeb-cd1c6b7b5439'}/assets/${'1'}`,
+        //   {
+        //     method: 'PATCH',
+        //     body: JSON.stringify(value),
+        //     headers: {
+        //       'Content-Type': 'application/json',
+        //     },
+        //   },
+        // ).then((res) => {
+        //   setShowModal(false)
+        // })
       })
       .catch((error) => {
         console.error('handleAccountItemSave', error)
       })
   }
 
+  const handleDeleteAsset = () => {
+    fetch(
+      `http://zumoney-server.iptime.org:8080/users/${'780c9676-c655-4851-bfeb-cd1c6b7b5439'}/assets/${'1'}`,
+      { method: 'DELETE' },
+    ).then((res) => {
+      console.log('삭제 되었습니다.')
+      setShowModal(false)
+    })
+  }
   useEffect(() => {
     return () => setAssetData(undefined)
   }, [setAssetData])
@@ -28,7 +69,7 @@ const AccountModal = (props) => {
       footer={[
         <>
           {data && (
-            <Button key="delete" danger onClick={() => console.log('삭제하기')}>
+            <Button key="delete" danger onClick={handleDeleteAsset}>
               삭제
             </Button>
           )}

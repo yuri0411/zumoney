@@ -5,12 +5,22 @@ import AccountModal from '../../components/management/AccountModal'
 import AccountManagement from '../../components/management/AccountManagement'
 import Seo from '../../components/Seo'
 
+const fetcher = (url) => fetch(url).then((r) => r.json())
+
 const AssetManagement = () => {
   const { TabPane } = Tabs
   const [showModal, setShowModal] = useState(false)
-  const [assetsInfo, setAssetsInfo] = useState([])
+  // const [assetsInfo, setAssetsInfo] = useState([])
   const [assetData, setAssetData] = useState()
   const [assetCategory, setAssetCategory] = useState([])
+
+  const { data, error } = useSWR(
+    `https://zumoney.herokuapp.com/users/${'780c9676-c655-4851-bfeb-cd1c6b7b5439'}/assets`,
+    fetcher,
+  )
+
+  const assetsInfo = data?.assets || []
+
   const addAccount = () => {
     setShowModal(true)
   }
@@ -24,14 +34,6 @@ const AssetManagement = () => {
         setShowModal(true)
       })
   }
-
-  useEffect(() => {
-    fetch(
-      `https://zumoney.herokuapp.com/users/${'780c9676-c655-4851-bfeb-cd1c6b7b5439'}/assets`,
-    )
-      .then((res) => res.json())
-      .then((data) => setAssetsInfo(data?.assets))
-  }, [])
 
   useEffect(() => {
     fetch(`https://zumoney.herokuapp.com/categories/${3}/children`)
@@ -68,6 +70,7 @@ const AssetManagement = () => {
           onCancel={() => setShowModal(!showModal)}
           data={assetData}
           setAssetData={setAssetData}
+          setShowModal={setShowModal}
           title={assetData ? '수정하기' : '추가하기'}
           okText={assetData ? '수정' : '저장'}
         />
