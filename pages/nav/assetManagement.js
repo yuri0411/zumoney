@@ -1,23 +1,22 @@
 import React, { useEffect, useState } from 'react'
-import useSWR from 'swr'
+import useSWR, { useSWRConfig } from 'swr'
 import { Button, PageHeader, Tabs } from 'antd'
 import AccountModal from '../../components/management/AccountModal'
 import AccountManagement from '../../components/management/AccountManagement'
 import Seo from '../../components/Seo'
+import api from '../../constants/api'
 
 const fetcher = (url) => fetch(url).then((r) => r.json())
 
+const userId = 'e6a94da5-4845-4478-b3c2-552904308aba'
 const AssetManagement = () => {
   const { TabPane } = Tabs
   const [showModal, setShowModal] = useState(false)
-  // const [assetsInfo, setAssetsInfo] = useState([])
   const [assetData, setAssetData] = useState()
   const [assetCategory, setAssetCategory] = useState([])
+  const { mutate } = useSWRConfig()
 
-  const { data, error } = useSWR(
-    `https://zumoney.herokuapp.com/users/${'780c9676-c655-4851-bfeb-cd1c6b7b5439'}/assets`,
-    fetcher,
-  )
+  const { data, error } = useSWR(`${api.url}/users/${userId}/assets`, fetcher)
 
   const assetsInfo = data?.assets || []
 
@@ -25,9 +24,7 @@ const AssetManagement = () => {
     setShowModal(true)
   }
   const handleEditAccount = (id) => {
-    fetch(
-      `https://zumoney.herokuapp.com/users/${'780c9676-c655-4851-bfeb-cd1c6b7b5439'}/assets/${id}`,
-    )
+    fetch(`${api.url}/users/${userId}/assets/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setAssetData(data)
@@ -35,11 +32,40 @@ const AssetManagement = () => {
       })
   }
 
+  const handleAccountItemSave = async (value, id) => {
+    const stringConversion = { ...value, balance: parseInt(value.balance) }
+
+    try {
+      if (assetData) {
+        await fetch(`${api.url}/users/${userId}/assets/${id}`, {
+          method: 'PATCH',
+          body: JSON.stringify(stringConversion),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+      } else {
+        await fetch(`${api.url}/users/${userId}/assets`, {
+          method: 'POST',
+          body: JSON.stringify(stringConversion),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+      }
+      mutate(`${api.url}/users/${userId}/assets`)
+      setShowModal(false)
+    } catch (error) {
+      console.error('handleAccountItemSave', error)
+    }
+  }
+
   useEffect(() => {
-    fetch(`https://zumoney.herokuapp.com/categories/${3}/children`)
+    fetch(`${api.url}/categories/${3}/children`)
       .then((res) => res.json())
       .then((category) => setAssetCategory(category))
   }, [])
+
   return (
     <>
       <Seo title="자산 관리" />
@@ -73,6 +99,7 @@ const AssetManagement = () => {
           setShowModal={setShowModal}
           title={assetData ? '수정하기' : '추가하기'}
           okText={assetData ? '수정' : '저장'}
+          handleAccountItemSave={handleAccountItemSave}
         />
       ) : null}
     </>

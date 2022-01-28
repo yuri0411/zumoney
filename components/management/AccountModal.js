@@ -1,58 +1,28 @@
 import { Button, Form, Input, Modal, Select, Switch } from 'antd'
 import { useEffect } from 'react'
 import useSWR, { useSWRConfig } from 'swr'
+import api from '../../constants/api'
+
+const userId = 'e6a94da5-4845-4478-b3c2-552904308aba'
 
 const AccountModal = (props) => {
-  const { visible, onCancel, data, setAssetData, title, okText, setShowModal } =
-    props
+  const {
+    visible,
+    onCancel,
+    data,
+    setAssetData,
+    title,
+    okText,
+    setShowModal,
+    handleAccountItemSave,
+  } = props
   const [form] = Form.useForm()
   const { Option } = Select
-  const { mutate } = useSWRConfig()
-
-  const handleAccountItemSave = () => {
-    form
-      .validateFields()
-      .then((value) => {
-        const stringConversion = { ...value, balance: parseInt(value.balance) }
-        fetch(
-          `https://zumoney.herokuapp.com/users/${'780c9676-c655-4851-bfeb-cd1c6b7b5439'}/assets`,
-          {
-            method: 'POST',
-            body: JSON.stringify(stringConversion),
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          },
-        ).then(() => {
-          setShowModal(false)
-          mutate(
-            `https://zumoney.herokuapp.com/users/${'780c9676-c655-4851-bfeb-cd1c6b7b5439'}/assets`,
-          )
-        })
-
-        // fetch(
-        //   `http://zumoney-server.iptime.org:8080/users/${'780c9676-c655-4851-bfeb-cd1c6b7b5439'}/assets/${'1'}`,
-        //   {
-        //     method: 'PATCH',
-        //     body: JSON.stringify(value),
-        //     headers: {
-        //       'Content-Type': 'application/json',
-        //     },
-        //   },
-        // ).then((res) => {
-        //   setShowModal(false)
-        // })
-      })
-      .catch((error) => {
-        console.error('handleAccountItemSave', error)
-      })
-  }
 
   const handleDeleteAsset = () => {
-    fetch(
-      `https://zumoney.herokuapp.com/users/${'780c9676-c655-4851-bfeb-cd1c6b7b5439'}/assets/${'1'}`,
-      { method: 'DELETE' },
-    ).then((res) => {
+    fetch(`${api.url}/users/${userId}/assets/${'1'}`, {
+      method: 'DELETE',
+    }).then((res) => {
       console.log('삭제 되었습니다.')
       setShowModal(false)
     })
@@ -73,7 +43,15 @@ const AccountModal = (props) => {
               삭제
             </Button>
           )}
-          <Button key="submit" type="primary" onClick={handleAccountItemSave}>
+          <Button
+            key="submit"
+            type="primary"
+            onClick={() => {
+              form.validateFields().then((value) => {
+                handleAccountItemSave(value, data?.id)
+              })
+            }}
+          >
             {okText}
           </Button>
         </>,
