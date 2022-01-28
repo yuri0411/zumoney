@@ -15,7 +15,7 @@ const AccountModal = (props) => {
       .then((value) => {
         const stringConversion = { ...value, balance: parseInt(value.balance) }
         fetch(
-          `http://zumoney-server.iptime.org:8080/users/${'780c9676-c655-4851-bfeb-cd1c6b7b5439'}/assets`,
+          `https://zumoney.herokuapp.com/users/${'780c9676-c655-4851-bfeb-cd1c6b7b5439'}/assets`,
           {
             method: 'POST',
             body: JSON.stringify(stringConversion),
@@ -50,7 +50,7 @@ const AccountModal = (props) => {
 
   const handleDeleteAsset = () => {
     fetch(
-      `http://zumoney-server.iptime.org:8080/users/${'780c9676-c655-4851-bfeb-cd1c6b7b5439'}/assets/${'1'}`,
+      `https://zumoney.herokuapp.com/users/${'780c9676-c655-4851-bfeb-cd1c6b7b5439'}/assets/${'1'}`,
       { method: 'DELETE' },
     ).then((res) => {
       console.log('삭제 되었습니다.')
