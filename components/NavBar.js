@@ -16,7 +16,7 @@ const categoryComponent = {
 const NavBar = () => {
   const { data, error } = useSWR(`${api.url}/categories`, fetcher)
   const router = useRouter()
-  console.log('router', router)
+
   return (
     <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
       {data?.map((category) => (
