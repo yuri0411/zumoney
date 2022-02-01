@@ -61,7 +61,7 @@ const testData = [
   },
 ]
 
-const AccountBook = () => {
+const AccountBook_ = () => {
   const [toggleBtn, setToggleBtn] = useState(false)
 
   const getTotalAmount = (tagName) => {
@@ -111,4 +111,4 @@ const AccountBook = () => {
   )
 }
 
-export default AccountBook
+export default AccountBook_
