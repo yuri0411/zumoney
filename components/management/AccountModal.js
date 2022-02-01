@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import useSWR, { useSWRConfig } from 'swr'
 import api from '../../constants/api'
 
-const userId = 'e6a94da5-4845-4478-b3c2-552904308aba'
+const userId = '11a77924-8776-4d55-845e-ac86bf4fc121'
 
 const AccountModal = (props) => {
   const {

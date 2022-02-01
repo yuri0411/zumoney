@@ -4,7 +4,8 @@ import useSWR from 'swr'
 import api from '../constants/api'
 import { useRouter } from 'next/router'
 
-const fetcher = (url) => fetch(url).then((r) => r.json())
+const fetcher = (url) =>
+  fetch(url, { credentials: 'include' }).then((r) => r.json())
 
 const categoryComponent = {
   1: 'assetStatus',

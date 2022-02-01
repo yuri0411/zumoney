@@ -9,7 +9,7 @@ import { useRouter } from 'next/router'
 
 const fetcher = (url) => fetch(url).then((r) => r.json())
 
-const userId = 'e6a94da5-4845-4478-b3c2-552904308aba'
+const userId = '11a77924-8776-4d55-845e-ac86bf4fc121'
 const AssetManagement = () => {
   const { TabPane } = Tabs
   const [showModal, setShowModal] = useState(false)
@@ -19,7 +19,7 @@ const AssetManagement = () => {
   const router = useRouter()
   const { parentId } = router.query
   const parentCategoryId = Number(parentId)
-
+  console.log(parentId, parentCategoryId)
   const { data, error } = useSWR(`${api.url}/users/${userId}/assets`, fetcher)
 
   const assetsInfo = data?.assets || []
@@ -28,7 +28,7 @@ const AssetManagement = () => {
     setShowModal(true)
   }
   const handleEditAccount = (id) => {
-    fetch(`${api.url}/users/${userId}/assets/${id}`)
+    fetch(`${api.url}/users/${userId}/assets/${id}`, { credentials: 'include' })
       .then((res) => res.json())
       .then((data) => {
         setAssetData(data)
@@ -63,7 +63,9 @@ const AssetManagement = () => {
     }
   }
   useEffect(() => {
-    fetch(`${api.url}/categories/${parentCategoryId}/children`)
+    fetch(`${api.url}/categories/${parentCategoryId}/children`, {
+      credentials: 'include',
+    })
       .then((res) => res.json())
       .then((category) => setAssetCategory(category))
   }, [parentCategoryId])
