@@ -10,7 +10,6 @@ function MyApp({ Component, pageProps }) {
   const router = useRouter()
   const { isLogin } = router.query
 
-  console.log('isLogin', isLogin)
   return (
     <Layout style={{ background: 'transparent' }}>
       {!isLogin && (

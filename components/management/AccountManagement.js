@@ -1,14 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { List } from 'antd'
 
-const typeOfList = [
-  { id: 4, type: '입출금' },
-  { type: '예적금' },
-  { type: '현금' },
-]
-
 const AccountManagement = (props) => {
-  const { category, handleEditAccount, assetsData } = props
+  const { category, handleEditAccount, assetsInfo } = props
   const [accountCategory, setAccountCategory] = useState([])
 
   const getFilteredAssets = (categoryId, data) => {
@@ -27,6 +21,7 @@ const AccountManagement = (props) => {
       .then((res) => res.json())
       .then((category) => setAccountCategory(category))
   }, [])
+
   return (
     <>
       {accountCategory.map((list) => (
@@ -37,7 +32,7 @@ const AccountManagement = (props) => {
             </div>
           }
           size="small"
-          dataSource={getFilteredAssets(list.id, assetsData)}
+          dataSource={getFilteredAssets(list.id, assetsInfo)}
           key={list.name}
           renderItem={(asset) => (
             <List.Item onClick={() => handleEditAccount(asset.id)}>

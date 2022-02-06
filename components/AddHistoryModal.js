@@ -89,7 +89,6 @@ const AddHistoryModal = (props) => {
 
   const handleHistorySave = () => {
     const allData = form.getFieldsValue()
-    console.log('allData', allData)
   }
   const handleChange = (e) => {
     const value = e.target.value

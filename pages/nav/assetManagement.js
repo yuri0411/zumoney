@@ -19,11 +19,11 @@ const AssetManagement = () => {
   const router = useRouter()
   const { parentId } = router.query
   const parentCategoryId = Number(parentId)
-  console.log(parentId, parentCategoryId)
   const { data, error } = useSWR(`${api.url}/users/${userId}/assets`, fetcher)
-
   const assetsInfo = data?.assets || []
 
+  console.log('assetCategory', assetCategory)
+  console.log('assetsInfo', assetsInfo)
   const addAccount = () => {
     setShowModal(true)
   }
@@ -62,6 +62,7 @@ const AssetManagement = () => {
       console.error('handleAccountItemSave', error)
     }
   }
+
   useEffect(() => {
     fetch(`${api.url}/categories/${parentCategoryId}/children`, {
       credentials: 'include',
@@ -74,7 +75,7 @@ const AssetManagement = () => {
     <>
       <Seo title="자산 관리" />
       <Tabs tabPosition="left">
-        {assetCategory &&
+        {!assetCategory.error &&
           assetCategory?.map((category) => (
             <TabPane tab={category.name} key={category.name}>
               <PageHeader
@@ -90,7 +91,7 @@ const AssetManagement = () => {
               <AccountManagement
                 // category={category.name}
                 handleEditAccount={handleEditAccount}
-                assetsData={assetsInfo}
+                assetsInfo={assetsInfo}
               />
             </TabPane>
           ))}
