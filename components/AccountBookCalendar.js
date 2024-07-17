@@ -38,7 +38,6 @@ const AccountBookCalendar = () => {
   }
 
   function dateCellRender(value) {
-    console.log('dateCellRender', value)
     const listData = getListData(value)
     return (
       <ul className="events">
